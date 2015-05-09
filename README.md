@@ -8,6 +8,8 @@
 
 You can find zip-files of Alto CMS [here](https://github.com/altocms/altocms/releases)
 
+**Important!** You need delete file **altocms-installer.php** after installation!
+
 #[RU] Распаковщик и установщик Alto CMS
 
 ##Usage
@@ -17,3 +19,5 @@ You can find zip-files of Alto CMS [here](https://github.com/altocms/altocms/rel
  * Следуйте инструкциям на экране 
 
 Вы можете найти zip-файлы Alto CMS [здесь](https://github.com/altocms/altocms/releases)
+
+**Важно!** Необходимо обязательно удалить файл **altocms-installer.php** после установки!
