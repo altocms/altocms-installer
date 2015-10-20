@@ -13,7 +13,7 @@
  */
 class Installer {
 
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     protected $sTargetDir;
     protected $sExecUrl;
@@ -416,12 +416,39 @@ class Installer {
     }
 
     /**
+     * Load and install required or last version
+     *
+     * @param string $sVersion
+     */
+    public function execLoad($sVersion) {
+
+        $sUrl = 'http://altocms.ru/download/altocms/' . $sVersion . '/';
+        $this->_outLn('Load archive...');
+        $sContent = file_get_contents($sUrl);
+        if ($sContent) {
+            $sFile = 'altocms-' . $sVersion . '.zip';
+            if (file_put_contents($sFile, $sContent)) {
+                $this->execFile($sFile);
+            } else {
+                $this->_error('Cannot write file "' . $sFile . '"');
+            }
+        } else {
+            $this->_error('Cannot load file from "' . $sUrl . '"');
+        }
+    }
+
+    /**
      * Show help text
      */
     public function execHelp() {
 
         $this->_outLn();
-        $this->_outLn('Usage: <strong>' . $this->sExecUrl . '?file=file_name.zip</strong>');
+        $this->_outLn('Usage:');
+        $this->_outLn('&nbsp;&nbsp;&nbsp;<strong>' . $this->sExecUrl . '?file=file_name.zip</strong>');
+        $this->_outLn('OR');
+        $this->_outLn('&nbsp;&nbsp;&nbsp;<strong>' . $this->sExecUrl . '?load=&lt;version_number&gt;</strong>');
+        $this->_outLn('OR');
+        $this->_outLn('&nbsp;&nbsp;&nbsp;<strong>' . $this->sExecUrl . '?load=last</strong>');
         $this->_outLn();
         $aFiles = glob($this->sExecDir . '*.zip');
         if ($aFiles) {
@@ -456,6 +483,8 @@ class Installer {
 
         if ($sFile = $this->_getParam('file')) {
             $this->execFile($sFile);
+        } elseif ($sVersion = $this->_getParam('load')) {
+            $this->execLoad($sVersion);
         } else {
             $this->execHelp();
         }
